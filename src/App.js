@@ -15,19 +15,31 @@ import "./App.css";
 
 // localStorage.setItem('CAMIELI_V1', JSON.stringify(defaultTodos));
 
-function App() {
-  const localStorageTodos = localStorage.getItem("CAMIELI_V1");
+function useLocalStorage (itemName, initialValue) {
+  const localStorageItem = localStorage.getItem(itemName);
 
-  let parsedTodos;
+  let parsedItem;
 
-  if (!localStorageTodos) {
-    localStorage.setItem("CAMIELI_V1", JSON.stringify([]));
-    parsedTodos = [];
+  if (!localStorageItem) {
+    localStorage.setItem(itemName, JSON.stringify(initialValue));
+    parsedItem = initialValue;
   } else {
-    parsedTodos = JSON.parse(localStorageTodos);
+    parsedItem = JSON.parse(localStorageItem);
   }
 
-  const [todos, setTodos] = React.useState(parsedTodos);
+  const [item, setItem] = React.useState(parsedItem);
+
+  const saveItem = (newItem) => {
+    localStorage.setItem(itemName, JSON.stringify(newItem)); 
+    setItem(newItem)
+  }
+
+  return [item, saveItem]
+}
+
+function App() {
+
+  const [todos, saveTodos] = useLocalStorage('CAMIELI_V1', []);
   const [searchValue, setSearchValue] = React.useState("");
   console.log(searchValue);
 
@@ -39,11 +51,6 @@ function App() {
     const searchText = searchValue.toLocaleLowerCase();
     return todoText.includes(searchText);
   });
-
-  const saveTodos = (newTodos) => {
-    localStorage.setItem('CAMIELI_V1', JSON.stringify(newTodos)); 
-    setTodos(newTodos)
-  }
 
   const completeTodo = (text) => {
     const newTodos = [...todos];
