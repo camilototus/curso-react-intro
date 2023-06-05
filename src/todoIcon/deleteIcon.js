@@ -1,4 +1,4 @@
-import { TodoIcon } from './todoIcon'
+import { TodoIcon } from './'
 import React from "react";
 
 function DeleteIcon({ onDelete }) {
