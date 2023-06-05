@@ -2,6 +2,8 @@ import React from "react";
 import { AppUI } from "./AppUI";
 import { useLocalStorage } from "./useLocalStorage";
 
+// localStorage.removeItem("CAMIELI_V1");
+
 // const defaultTodos = [
 //   { text: 'Cortar cebolla', completed: true},
 //   { text: 'Tomar el Curso completo', completed: false},
@@ -12,7 +14,12 @@ import { useLocalStorage } from "./useLocalStorage";
 // localStorage.setItem('CAMIELI_V1', JSON.stringify(defaultTodos));
 
 function App() {
-  const [todos, saveTodos] = useLocalStorage("CAMIELI_V1", []);
+  const {
+    item: todos, 
+    saveItem: saveTodos,
+    loading,
+    error
+   } = useLocalStorage("CAMIELI_V1", []);
   const [searchValue, setSearchValue] = React.useState("");
   console.log(searchValue);
 
@@ -46,6 +53,8 @@ function App() {
 
   return (
     <AppUI
+    loading={loading}
+    error={error}
     completedTodos={completedTodos}
     totalTodos={totalTodos}
     searchValue={searchValue}
