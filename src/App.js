@@ -1,73 +1,82 @@
-import React from 'react'
-import { TodoCounter } from './TodoCounter';
-import { TodoSearch } from './TodoSearch';
-import { TodoList } from './TodoList';
-import { TodoItem } from './TodoItem';
-import { CreateTodoButton } from './CreateTodoButton';
-import './App.css';
+import React from "react";
+import { TodoCounter } from "./TodoCounter";
+import { TodoSearch } from "./TodoSearch";
+import { TodoList } from "./TodoList";
+import { TodoItem } from "./TodoItem";
+import { CreateTodoButton } from "./CreateTodoButton";
+import "./App.css";
 
-const defaultTodos = [
-  { text: 'Cortar cebolla', completed: true},
-  { text: 'Tomar el Curso completo', completed: false},
-  { text: 'Trabajo en un mes', completed: false},
-  { text: 'hacer ejercicios', completed: true}
-];
+// const defaultTodos = [
+//   { text: 'Cortar cebolla', completed: true},
+//   { text: 'Tomar el Curso completo', completed: false},
+//   { text: 'Trabajo en un mes', completed: false},
+//   { text: 'hacer ejercicios', completed: true}
+// ];
+
+// localStorage.setItem('CAMIELI_V1', JSON.stringify(defaultTodos));
 
 function App() {
-  const [todos, setTodos] = React.useState(defaultTodos);
-  const [searchValue, setSearchValue] = React.useState('')
-  console.log(searchValue)
+  const localStorageTodos = localStorage.getItem("CAMIELI_V1");
 
-  const completedTodos = todos.filter(
-    todo => !!todo.completed
-  ).length;
-  const totalTodos = todos.length
+  let parsedTodos;
 
-  const searchedTodos = todos.filter(
-    (todo) => {
-      const todoText = todo.text.toLocaleLowerCase()
-      const searchText = searchValue.toLocaleLowerCase()
-      return todoText.includes(searchText)
-    }
-  );
+  if (!localStorageTodos) {
+    localStorage.setItem("CAMIELI_V1", JSON.stringify([]));
+    parsedTodos = [];
+  } else {
+    parsedTodos = JSON.parse(localStorageTodos);
+  }
+
+  const [todos, setTodos] = React.useState(parsedTodos);
+  const [searchValue, setSearchValue] = React.useState("");
+  console.log(searchValue);
+
+  const completedTodos = todos.filter((todo) => !!todo.completed).length;
+  const totalTodos = todos.length;
+
+  const searchedTodos = todos.filter((todo) => {
+    const todoText = todo.text.toLocaleLowerCase();
+    const searchText = searchValue.toLocaleLowerCase();
+    return todoText.includes(searchText);
+  });
+
+  const saveTodos = (newTodos) => {
+    localStorage.setItem('CAMIELI_V1', JSON.stringify(newTodos)); 
+    setTodos(newTodos)
+  }
 
   const completeTodo = (text) => {
-    const newTodos = [...todos]
-    const todoIndex = newTodos.findIndex(
-      (todo) => todo.text === text
-    );
-    if(!newTodos[todoIndex].completed)
-      {newTodos[todoIndex].completed = true}
-      else{newTodos[todoIndex].completed = false} 
-      
-    setTodos(newTodos)
+    const newTodos = [...todos];
+    const todoIndex = newTodos.findIndex((todo) => todo.text === text);
+    if (!newTodos[todoIndex].completed) {
+      newTodos[todoIndex].completed = true;
+    } else {
+      newTodos[todoIndex].completed = false;
+    }
+
+    saveTodos(newTodos);
   };
-  
+
   const deleteTodo = (text) => {
-    const newTodos = [...todos]
-    const todoIndex = newTodos.findIndex(
-      (todo) => todo.text === text
-    );
+    const newTodos = [...todos];
+    const todoIndex = newTodos.findIndex((todo) => todo.text === text);
     newTodos.splice(todoIndex, 1);
-    setTodos(newTodos)
+    saveTodos(newTodos);
   };
 
   return (
     <React.Fragment>
       <TodoCounter completed={completedTodos} total={totalTodos} />
-      <TodoSearch 
-        searchValue={searchValue}
-        setSearchValue={setSearchValue}
-      />
+      <TodoSearch searchValue={searchValue} setSearchValue={setSearchValue} />
 
       <TodoList>
-        {searchedTodos.map(todo => (
-          <TodoItem 
-          key={todo.text} 
-          text={todo.text}
-          completed={todo.completed}
-          onComplete={() => completeTodo(todo.text)}
-          onDelete={() => deleteTodo(todo.text)}
+        {searchedTodos.map((todo) => (
+          <TodoItem
+            key={todo.text}
+            text={todo.text}
+            completed={todo.completed}
+            onComplete={() => completeTodo(todo.text)}
+            onDelete={() => deleteTodo(todo.text)}
           />
         ))}
       </TodoList>
