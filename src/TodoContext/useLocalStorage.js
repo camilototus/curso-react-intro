@@ -26,7 +26,7 @@ function useLocalStorage(itemName, initialValue) {
                 setLoading(false)
                 setError(error)
             }
-        }, 500)
+        }, 1000)
     }, [])    
   
   
@@ -44,3 +44,16 @@ function useLocalStorage(itemName, initialValue) {
   }
 
   export { useLocalStorage };
+
+  
+
+// localStorage.removeItem("CAMIELI_V1");
+
+// const defaultTodos = [
+//   { text: 'Cortar cebolla', completed: true},
+//   { text: 'Tomar el Curso completo', completed: false},
+//   { text: 'Trabajo en un mes', completed: false},
+//   { text: 'hacer ejercicios', completed: true}
+// ];
+
+// localStorage.setItem('CAMIELI_V1', JSON.stringify(defaultTodos));
