@@ -12,6 +12,7 @@ function TodoProvider({ children }) {
         error
        } = useLocalStorage("CAMIELI_V1", []);
       const [searchValue, setSearchValue] = React.useState("");
+      const [openModal, setOpenModal] = React.useState(false);
       console.log(searchValue);
     
       const completedTodos = todos.filter((todo) => !!todo.completed).length;
@@ -52,7 +53,9 @@ function TodoProvider({ children }) {
             setSearchValue,
             searchedTodos,
             completeTodo,
-            deleteTodo
+            deleteTodo,
+            openModal,
+            setOpenModal,
         }}>
             {children}
         </TodoContext.Provider>
