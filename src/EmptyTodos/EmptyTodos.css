@@ -1,0 +1,9 @@
+.EmptyTodos {
+    padding-top: 48px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #A5A5A5;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    font-size: 24px;
+}

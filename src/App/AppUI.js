@@ -36,7 +36,7 @@ return (
               </>
           )}
           {error && <TodosError />}
-          {(!loading && searchedTodos === 0) && <EmptyTodos />}
+          {(!loading && searchedTodos.length === 0) && <EmptyTodos />}
            
           {searchedTodos.map((todo) => (
             <TodoItem
